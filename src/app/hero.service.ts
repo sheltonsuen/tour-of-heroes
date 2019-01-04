@@ -55,6 +55,13 @@ export class HeroService {
     );
   }
 
+  deleteHero(id: number): Observable<Hero> {
+    return this.http.delete<Hero>(`${this.heroesUrl}/${id}`).pipe(
+      tap(_ => this.log(`deleted hero with id: ${id}`)),
+      catchError(this.handleError<any>('deleteError'))
+    );
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.log(error);

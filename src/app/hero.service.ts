@@ -6,6 +6,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import Hero from './hero';
 import { MessagesService } from './messages.service';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -34,6 +38,13 @@ export class HeroService {
     return this.http.get<Hero>(heroUrl).pipe(
       tap(_ => this.log(`feteched hero ${id}`)),
       catchError(this.handleError<Hero>(`getHero id=${id}`))
+    );
+  }
+
+  updateHero(hero: Hero): Observable<any> {
+    return this.http.put(this.heroesUrl, hero, httpOptions).pipe(
+      tap(_ => this.log(`update hero ${hero.name} !!!`)),
+      catchError(this.handleError<any>('updateError'))
     );
   }
 
